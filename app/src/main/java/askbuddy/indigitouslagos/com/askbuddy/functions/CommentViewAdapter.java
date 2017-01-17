@@ -1,4 +1,4 @@
-package askbuddy.indigitouslagos.com.askbuddy;
+package askbuddy.indigitouslagos.com.askbuddy.functions;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,22 +11,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import askbuddy.indigitouslagos.com.askbuddy.R;
+
 /**
- * Created by Opeyemi on 06/11/2016.
+ * Created by Opeyemi on 10/12/2016.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapter.ViewHolder> {
+public class CommentViewAdapter extends RecyclerView.Adapter <CommentViewAdapter.ViewHolder> {
 
     private List<Map> mapList;
-    private Context context;
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView questionTextView;
         public TextView commentTextView;
+        public TextView authorTextView;
+        public TextView dateTextView;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -35,14 +37,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            questionTextView = (TextView) itemView.findViewById(R.id.card_item);
-            commentTextView = (TextView) itemView.findViewById(R.id.comment_count);
+            commentTextView = (TextView) itemView.findViewById(R.id.comment_description);
+            authorTextView = (TextView) itemView.findViewById(R.id.comment_author);
+            dateTextView = (TextView) itemView.findViewById(R.id.comment_date);
         }
     }
 
     // Pass in the contact array into the constructor
-    public RecyclerViewAdapter(Context context, List<Map> mapList) {
-        this.context = context;
+    public CommentViewAdapter(List<Map> mapList) {
         this.mapList = mapList;
     }
 
@@ -52,7 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.card_layout, parent, false);
+        View contactView = inflater.inflate(R.layout.comments_layout, parent, false);
 
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(contactView);
@@ -64,18 +66,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
         HashMap mapList = (HashMap) this.mapList.get(position);
 
         // Set item views based on your views and data model
-        TextView questionTextView = holder.questionTextView;
-        questionTextView.setText((String) mapList.get("question"));
+        TextView authorTextView = holder.authorTextView;
+        authorTextView.setText((String) mapList.get("comment_author"));
         TextView commentTextView = holder.commentTextView;
-        commentTextView.setText("Comments: "+mapList.get("comment_count"));
+        commentTextView.setText((String) mapList.get("comment_description"));
+        TextView dateTextView = holder.dateTextView;
+        dateTextView.setText((String) mapList.get("comment_date"));
     }
 
     @Override
     public int getItemCount() {
         return mapList.size();
-    }
-
-    private Context getContext() {
-        return context;
     }
 }
